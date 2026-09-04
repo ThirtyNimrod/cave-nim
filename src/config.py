@@ -37,14 +37,3 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 # Verify this against the currently available models for your google-genai
 # SDK version before relying on it — model names/availability shift over time.
 GEMINI_MODEL = "gemini-2.5-flash"
-
-META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN")
-IG_USER_ID = os.environ.get("IG_USER_ID")
-GRAPH_API_VERSION = "v21.0"
-GRAPH_API_BASE = f"https://graph.facebook.com/{GRAPH_API_VERSION}"
-
-CONTAINER_POLL_INTERVAL_SECONDS = 3
-CONTAINER_POLL_TIMEOUT_SECONDS = 30
-
-# GitHub Actions sets this automatically; the fallback covers local runs.
-GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY", "ThirtyNimrod/cave-nim")

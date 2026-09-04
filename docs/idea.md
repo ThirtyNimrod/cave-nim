@@ -52,6 +52,11 @@ nim. 1.14
 6. Publish via the Meta Graph API.
 7. Commit the new entry back to the repo.
 
+Steps 6-7 were implemented and then removed from `main`/`claude` — Meta
+Graph API publishing requires a Facebook Page, which isn't available yet.
+See [current-implementation-plan.md](current-implementation-plan.md). The
+working implementation is preserved on the `meta-idea` git branch.
+
 ## The "Gemini Gem" reply voice (not yet built)
 
 A separate, manual tool: a custom Gemini persona for writing in-character

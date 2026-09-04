@@ -50,49 +50,6 @@ def append_entry(entries: list[dict], *, pos: dict, lines: list[str], icon: str,
         "lines": lines,
         "caption": config.CAPTION_TEMPLATE.format(chapter=pos["chapter"], verse=pos["verse"]),
         "image_path": image_path,
-        "status": "pending_review",
-        "published": False,
-        "published_at": None,
-        "ig_container_id": None,
-        "ig_media_id": None,
-        "publish_error": None,
     }
     entries.append(entry)
     return entry
-
-
-def list_pending(entries: list[dict]) -> list[dict]:
-    return [e for e in entries if not e["published"]]
-
-
-def find_pending(entries: list[dict], canon_ref: str | None) -> dict:
-    if canon_ref:
-        for entry in entries:
-            if entry["id"] == canon_ref:
-                if entry["published"]:
-                    raise ValueError(
-                        f"{canon_ref} was already published at {entry['published_at']} "
-                        f"(ig_media_id={entry['ig_media_id']})."
-                    )
-                return entry
-        raise ValueError(f"No canon entry found with id {canon_ref!r}.")
-
-    pending = list_pending(entries)
-    if not pending:
-        raise ValueError("No pending entries to publish.")
-    return max(pending, key=lambda e: e["index"])
-
-
-def mark_published(entry: dict, *, ig_media_id: str) -> None:
-    entry["published"] = True
-    entry["status"] = "published"
-    entry["published_at"] = _now_iso()
-    entry["ig_media_id"] = ig_media_id
-    entry["publish_error"] = None
-
-
-def mark_publish_failed(entry: dict, *, error: str, container_id: str | None = None) -> None:
-    entry["status"] = "publish_failed"
-    entry["publish_error"] = error
-    if container_id:
-        entry["ig_container_id"] = container_id
