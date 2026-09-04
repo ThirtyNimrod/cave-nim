@@ -10,10 +10,16 @@ built" view, see [architecture.md](architecture.md).
   `illustrator.py`, `compositor.py`, `gallery.py`, and `main.py`
   (`generate` / `list` / `gallery`).
 - `templates/card_template.html` — the 1080x1350 card layout.
-- 18 original, hand-authored doodle icons in `assets/doodles/` (fire, water,
-  moon, mountain, storm, spear, footprint, star, tree, stone, wind, bone,
-  shield, pawprint, thorn, cave, seed, snow) plus `assets/brand/sun.svg` for
-  the fixed top-bar icon.
+- 19 doodle icons in `assets/doodles/` (fire, water, moon, mountain, storm,
+  spear, footprint, star, tree, stone, wind, bone, shield, pawprint, thorn,
+  cave, seed, snow, earth), mixing hand-authored originals with a purchased
+  icon pack and one MIT-licensed icon — see [disclosure.md](disclosure.md)
+  for the full sourcing breakdown. `assets/brand/sun.svg` (top-bar icon) is
+  also from the purchased pack.
+- 6 three-stop gradient palettes and a font pool (Nunito/Poppins, loaded
+  live via Google Fonts), both picked at random per post rather than
+  rotated — see [idea.md](idea.md) for the original gradient/font plan this
+  replaced the flat 4-palette rotation with.
 - `main.py generate --count N` — batch generation for a manual, local,
   weekly-ish cadence rather than a daily automated one.
 - `main.py list` and `main.py gallery` — two offline ways to browse
@@ -28,10 +34,10 @@ built" view, see [architecture.md](architecture.md).
 
 1. **No AI image generation.** The original concept called for an image
    model (Imagen 3 / DALL-E 3) to generate a bespoke doodle per post. This
-   project uses a fixed set of hand-authored icons instead — see
-   [disclosure.md](disclosure.md) for why, and
-   [architecture.md](architecture.md) for how icon selection and recoloring
-   work without one.
+   project uses a fixed icon library instead (hand-authored plus two
+   properly-licensed sources) — see [disclosure.md](disclosure.md) for why,
+   and [architecture.md](architecture.md) for how icon selection and
+   recoloring work without one.
 2. **No raster image post-processing.** Because icons are vector SVG from
    the start, palette recoloring happens via a CSS variable at render time.
    Pillow was dropped from the dependencies entirely.
@@ -52,8 +58,6 @@ built" view, see [architecture.md](architecture.md).
 
 ## What's pending (not code — things only you can do)
 
-- **Gaegu font** — `assets/fonts/Gaegu-Regular.ttf` isn't in the repo yet;
-  cards currently render with a system fallback font. In progress.
 - **`GEMINI_API_KEY`** — needed for any post after `1.30`. See
   [gemini-api-key-setup.md](gemini-api-key-setup.md).
 - **Nothing has been pushed to GitHub yet.** `main`, `claude`, and

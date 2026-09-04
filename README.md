@@ -87,10 +87,16 @@ there's nothing to add as a GitHub Actions secret.
 ## Icon library
 
 `assets/doodles/manifest.json` maps icon slugs to SVG files and search tags;
-Gemini picks one slug per post from this list. All 18 are original single-
-stroke SVGs authored for this project (fire, water, moon, mountain, storm,
-spear, footprint, star, tree, stone, wind, bone, shield, pawprint, thorn,
-cave, seed, snow) — add more the same way as the verse vocabulary grows.
+Gemini picks one slug per post from this list, plus `earth` (19 total).
+Sourced from three places — see [docs/disclosure.md](docs/disclosure.md) for
+the full breakdown:
+- Hand-authored: mountain, spear, footprint, stone, bone, thorn, cave, seed.
+- Purchased ([khushmeen.com](https://khushmeen.com/icons.html), licensed):
+  fire, water, moon, earth, star, shield, snow, wind, storm, plus the
+  top-bar sun icon in `assets/brand/sun.svg`.
+- [Reicon](https://reicon.dev) (MIT licensed): pawprint.
+
+Add more the same way as the verse vocabulary grows.
 
 ## Documentation
 

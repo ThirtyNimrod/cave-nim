@@ -2,19 +2,16 @@
 <html>
 <head>
 <meta charset="utf-8">
+__FONT_LINK__
 <style>
-  @font-face {
-    font-family: 'Gaegu';
-    src: url('__FONT_URL__') format('truetype');
-  }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     width: 1080px;
     height: 1350px;
-    background: __CANVAS_COLOR__;
+    background: __CANVAS__;
     overflow: hidden;
-    font-family: 'Gaegu', sans-serif;
+    font-family: __FONT_FAMILY__;
   }
   .topbar {
     position: absolute;
@@ -39,7 +36,7 @@
   }
   .doodle-wrap {
     position: absolute;
-    top: 460px;
+    top: 100px;
     left: 0;
     right: 0;
     display: flex;
@@ -47,8 +44,8 @@
     color: __INK_COLOR__;
   }
   .doodle-wrap svg {
-    width: 340px;
-    height: 340px;
+    width: 480px;
+    height: 480px;
   }
   .verse {
     position: absolute;
@@ -57,7 +54,7 @@
     right: 90px;
     text-align: center;
     color: __INK_COLOR__;
-    font-size: 54px;
+    font-size: __FONT_SIZE__px;
     line-height: 1.4;
   }
   .stamp {

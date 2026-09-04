@@ -19,10 +19,12 @@ for why an earlier Meta Graph API integration was removed from this branch.
 
 ## Modules (`src/`)
 
-- **`config.py`** — every constant in one place: the 4 palettes, chapter
-  length (30), card dimensions (1080x1350), file paths, the caption
-  template, and the Gemini model name. Loads secrets from the environment
-  (via `python-dotenv` locally).
+- **`config.py`** — every constant in one place: the 6 three-stop gradient
+  palettes (rendered at a fixed `GRADIENT_ANGLE`), the font pool (picked at
+  random per post, loaded live via Google Fonts), chapter length (30), card
+  dimensions (1080x1350), file paths, the caption template, and the Gemini
+  model name. Loads secrets from the environment (via `python-dotenv`
+  locally).
 - **`canon.py`** — all reads/writes of `database/canon.json`: atomic save
   (write to a temp file, then `os.replace`), the chapter/verse/palette-index
   math (`next_position`), and appending a new entry.
@@ -32,10 +34,15 @@ for why an earlier Meta Graph API integration was removed from this branch.
   shape (exactly 3 non-empty lines, a known icon slug), and retries on
   transient failures.
 - **`illustrator.py`** — loads `assets/doodles/manifest.json`, resolves a
-  slug to its SVG file, and normalizes every SVG (strips fixed width/height
-  so CSS controls sizing, forces `stroke="currentColor"`) so the palette's
-  ink color can drive the icon's color purely via CSS. This is the entire
-  "recoloring" mechanism — no raster image processing anywhere.
+  slug to its SVG file, and normalizes every SVG (strips width/height from
+  the root `<svg>` tag only — some source icons carry a `<clipPath><rect
+  width=.. height=..>` internally, and stripping those globally collapses
+  the clip region to zero and hides the icon entirely; forces any hardcoded
+  black `stroke`/`fill` to `currentColor`) so the palette's ink color can
+  drive the icon's color purely via CSS. This is the entire "recoloring"
+  mechanism — no raster image processing anywhere. The icon library itself
+  mixes hand-authored SVGs with a purchased pack and one MIT-licensed icon —
+  see [disclosure.md](disclosure.md).
 - **`compositor.py`** — fills `templates/card_template.html`'s placeholder
   tokens, opens it in headless Chromium via Playwright at an exact
   1080x1350 viewport, waits for `document.fonts.ready`, and screenshots.

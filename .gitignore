@@ -220,3 +220,8 @@ __marimo__/
 # nim. project-specific
 assets/rendered/_preview.png
 gallery.html
+
+# Purchased icon source library (khushmeen.com) -- full 451-icon pack +
+# Figma file kept locally for reference only. The handful of files actually
+# used are copied into assets/doodles/ and assets/brand/, which ARE tracked.
+/ref/

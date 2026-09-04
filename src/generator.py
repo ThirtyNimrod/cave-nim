@@ -20,6 +20,9 @@ Voice rules:
 - Translate modern struggles into elemental metaphors (fire, stone, cave, hunt, storm, river).
 
 Write exactly 3 short lines (a single proverb split across 3 lines) about {theme_hint}.
+Each line must be under 40 characters — short enough to read in one breath and
+to fit on a single line of a square image. Split the proverb across lines at
+natural pauses, don't let any one line run long.
 Also choose the ONE icon slug from this list that best matches the proverb's subject:
 {icon_menu}
 
@@ -30,6 +33,7 @@ Respond with ONLY a JSON object, no markdown fences, in this exact shape:
 """
 
 _DEFAULT_THEME_HINT = "everyday resilience, patience, or quiet strength"
+_MAX_LINE_CHARS = 42
 
 
 def _build_prompt(icon_slugs: list[str], tags_by_slug: dict, recent_icons: list[str]) -> str:
@@ -52,6 +56,9 @@ def _validate(data: dict, icon_slugs: list[str]) -> dict:
         raise GenerationError(f"Model returned malformed lines: {lines!r}")
     if icon not in icon_slugs:
         raise GenerationError(f"Model returned unknown icon {icon!r}, expected one of {icon_slugs}")
+    too_long = [line for line in lines if len(line) > _MAX_LINE_CHARS]
+    if too_long:
+        raise GenerationError(f"Line(s) over {_MAX_LINE_CHARS} chars, would wrap/crowd: {too_long!r}")
     return {
         "lines": [line.strip() for line in lines],
         "icon": icon,

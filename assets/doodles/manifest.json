@@ -16,5 +16,6 @@
   "thorn": {"file": "thorn.svg", "tags": ["thorn", "bramble", "pain", "boundary", "caution"]},
   "cave": {"file": "cave.svg", "tags": ["cave", "shelter", "home", "safety", "rest"]},
   "seed": {"file": "seed.svg", "tags": ["seed", "sprout", "beginning", "growth", "patience"]},
-  "snow": {"file": "snow.svg", "tags": ["snow", "cold", "stillness", "waiting", "winter"]}
+  "snow": {"file": "snow.svg", "tags": ["snow", "cold", "stillness", "waiting", "winter"]},
+  "earth": {"file": "earth.svg", "tags": ["earth", "world", "nature", "home", "care"]}
 }

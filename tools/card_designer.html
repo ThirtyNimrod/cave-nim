@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>nim. card designer</title>
+<style>
+  :root{--surface-1:#1b1d21;--text-primary:#e8e9ea;--text-secondary:#9aa0a6;--text-muted:#6b7076;--border:#30343a;--radius:8px}
+  body{background:#121316;color:var(--text-primary);font-family:sans-serif;margin:0;padding:24px}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;700&family=Nunito:wght@400;700&family=Newsreader&family=Tenor+Sans&family=Imbue&display=swap">
+<style>
+  .cd-wrap{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+  .cd-controls{flex:1;min-width:260px;display:flex;flex-direction:column;gap:10px}
+  .cd-controls label{font-size:12px;color:var(--text-secondary);display:block;margin-bottom:3px}
+  .cd-controls input[type=text],.cd-controls select{width:100%;box-sizing:border-box;background:var(--surface-1);color:var(--text-primary);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px}
+  .cd-row{display:flex;gap:8px}
+  .cd-row>div{flex:1}
+  .cd-swatch{width:100%;height:36px;padding:0;border:0.5px solid var(--border);border-radius:var(--radius);background:none}
+  .cd-note{font-size:11px;color:var(--text-muted);margin:2px 0 0}
+  .cd-frame{background:var(--surface-1);border-radius:12px;padding:16px;display:inline-block}
+  .cd-viewport{width:340px;height:425px;overflow:hidden;position:relative;border-radius:8px}
+  .cd-card{width:1080px;height:1350px;position:relative;transform-origin:top left;transform:scale(0.31481)}
+</style>
+<h2 class="sr-only">Interactive card designer for nim. proverb cards — adjust text, icon, palette, and font, and see a live scaled preview of the actual card layout</h2>
+<div class="cd-wrap">
+  <div class="cd-controls">
+    <div><label>Line 1</label><input type="text" id="cdL1" value="cave dark tonight."></div>
+    <div><label>Line 2</label><input type="text" id="cdL2" value="moon still come."></div>
+    <div><label>Line 3</label><input type="text" id="cdL3" value="nim still wake."></div>
+    <div><label>Icon</label><select id="cdIcon"></select></div>
+    <div><label>Palette</label><select id="cdPalette"></select></div>
+    <div><label>Font</label><select id="cdFont"></select></div>
+    <p class="cd-note" id="cdFontNote"></p>
+    <div id="cdColorFlat" class="cd-row">
+      <div><label>Canvas</label><input type="color" class="cd-swatch" id="cdCanvas"></div>
+      <div><label>Ink</label><input type="color" class="cd-swatch" id="cdInk"></div>
+    </div>
+    <div id="cdColorGrad" style="display:none">
+      <div class="cd-row">
+        <div><label>Stop 1</label><input type="color" class="cd-swatch" id="cdStop1"></div>
+        <div><label>Stop 2</label><input type="color" class="cd-swatch" id="cdStop2"></div>
+        <div><label>Stop 3</label><input type="color" class="cd-swatch" id="cdStop3"></div>
+      </div>
+      <div style="margin-top:8px"><label>Ink</label><input type="color" class="cd-swatch" id="cdInkGrad"></div>
+      <div style="margin-top:8px"><label>Angle (<span id="cdAngleOut">0</span>°)</label><input type="range" min="0" max="360" step="1" value="0" id="cdAngle" style="width:100%"></div>
+    </div>
+  </div>
+  <div class="cd-frame">
+    <div class="cd-viewport">
+      <div class="cd-card" id="cdCard">
+        <div style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:56px 64px 0;opacity:.55" id="cdTop">
+          <span style="font-size:40px">nim.</span>
+          <span style="width:36px;height:36px" id="cdSun"></span>
+        </div>
+        <div style="position:absolute;top:100px;left:0;right:0;display:flex;justify-content:center" id="cdDoodle"></div>
+        <div style="position:absolute;bottom:230px;left:90px;right:90px;text-align:center;line-height:1.4" id="cdVerse"></div>
+        <div style="position:absolute;bottom:72px;left:0;right:0;text-align:center;opacity:.6;font-size:28px;letter-spacing:1px" id="cdStamp">nim. 1.31</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+var ICONS={
+fire:'<path d="M12 21c-3.5 0-6-2.5-6-6 0-3 2-5 3-8 .5 2 2 3 2 5 0-3 1-5 3-7 1 3 4 5 4 10 0 3.5-2.5 6-6 6z"/>',
+water:'<path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z"/>',
+moon:'<circle cx="12" cy="12" r="8"/><circle cx="9" cy="9" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="0.9" fill="currentColor" stroke="none"/>',
+mountain:'<polyline points="2 20 9 8 13 14 16 9 22 20"/>',
+storm:'<path d="M6 16a4 4 0 0 1 .5-7.97A6 6 0 0 1 18 10a3.5 3.5 0 0 1-.5 7H6z"/><polyline points="11 13 9 18 12 18 10 22"/>',
+spear:'<line x1="4" y1="20" x2="18" y2="6"/><polyline points="15 3 21 3 21 9"/>',
+footprint:'<ellipse cx="9" cy="8" rx="3" ry="4"/><ellipse cx="15" cy="17" rx="3" ry="4"/>',
+star:'<polygon points="12 2 14.5 9 22 9 16 13.5 18 21 12 16.5 6 21 8 13.5 2 9 9.5 9"/>',
+tree:'<line x1="12" y1="22" x2="12" y2="14"/><path d="M12 14 5 14a5 5 0 0 1 3-9 5 5 0 0 1 8 0 5 5 0 0 1 3 9z"/>',
+stone:'<path d="M4 18c-1-3 1-6 4-7 1-3 4-4 7-3 3 1 5 4 4 7 1 2 0 4-2 4H6c-1 0-2-.5-2-1z"/>',
+wind:'<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 16h15a3 3 0 1 1-3 3"/>',
+bone:'<line x1="7" y1="17" x2="17" y2="7" stroke-width="3"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/>',
+shield:'<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/>',
+pawprint:'<circle cx="12" cy="15" r="4"/><circle cx="6" cy="9" r="2"/><circle cx="18" cy="9" r="2"/><circle cx="9" cy="5" r="1.8"/><circle cx="15" cy="5" r="1.8"/>',
+thorn:'<line x1="3" y1="21" x2="21" y2="3"/><line x1="7" y1="17" x2="10" y2="12"/><line x1="11" y1="13" x2="14" y2="8"/><line x1="15" y1="9" x2="18" y2="4"/>',
+cave:'<path d="M3 21V13a9 9 0 0 1 18 0v8"/>',
+seed:'<line x1="12" y1="22" x2="12" y2="12"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6z"/><path d="M12 12c0-3 2-5 5-5 0 3-2 5-5 5z"/>',
+snow:'<line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/>',
+earth:'<circle cx="12" cy="12" r="8"/><ellipse cx="12" cy="12" rx="3.2" ry="8"/><line x1="4" y1="12" x2="20" y2="12"/>'
+};
+var SUN='<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+var PAL={
+'obsidian-grad':{label:'Obsidian Chrome',type:'grad',stops:['#0B0B0D','#3B4652','#D8DCE0'],ink:'#F4F5F6'},
+'terracotta-grad':{label:'Terracotta Sunset',type:'grad',stops:['#2E1A14','#C96A4B','#FAD4C0'],ink:'#FBEAE0'},
+'amethyst-grad':{label:'Amethyst Geode',type:'grad',stops:['#1A1030','#6C4AB6','#D8CCF0'],ink:'#F3EEFC'},
+'tempest-grad':{label:'Violet Tempest',type:'grad',stops:['#0D1B3E','#4B2E83','#6FE7DD'],ink:'#F2FFFC'},
+'hearth-grad':{label:'Vintage Hearth',type:'grad',stops:['#3A0F1B','#8C8680','#F1E7DA'],ink:'#FBF5EC'},
+'cobalt-grad':{label:'Colonial Cobalt',type:'grad',stops:['#1B3F8B','#C9A67A','#F4EBD9'],ink:'#FCF8F1'}
+};
+var FONTS={
+'Nunito (confirmed)':{family:"'Nunito', sans-serif",ok:true},
+'Poppins (confirmed)':{family:"'Poppins', sans-serif",ok:true},
+'Anton (extra option)':{family:"'Anton', sans-serif",ok:true},
+'Newsreader (extra option)':{family:"'Newsreader', serif",ok:true},
+'Tenor Sans (extra option)':{family:"'Tenor Sans', sans-serif",ok:true},
+'Imbue (extra option)':{family:"'Imbue', serif",ok:true}
+};
+var iconSel=document.getElementById('cdIcon');
+Object.keys(ICONS).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;iconSel.appendChild(o);});
+iconSel.value='moon';
+var palSel=document.getElementById('cdPalette');
+Object.keys(PAL).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=PAL[k].label;palSel.appendChild(o);});
+palSel.value='terracotta-grad';
+var fontSel=document.getElementById('cdFont');
+Object.keys(FONTS).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;fontSel.appendChild(o);});
+fontSel.value='Nunito (confirmed)';
+document.getElementById('cdSun').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:100%;height:100%">'+SUN+'</svg>';
+function fontSizeFor(lines){var m=Math.max.apply(null,lines.map(function(l){return l.length}));if(m<=25)return 54;if(m<=35)return 46;if(m<=45)return 38;return 32;}
+function syncColorInputs(){
+var p=PAL[palSel.value];
+if(p.type==='flat'){
+document.getElementById('cdColorFlat').style.display='flex';
+document.getElementById('cdColorGrad').style.display='none';
+document.getElementById('cdCanvas').value=p.canvas;
+document.getElementById('cdInk').value=p.ink;
+}else{
+document.getElementById('cdColorFlat').style.display='none';
+document.getElementById('cdColorGrad').style.display='block';
+document.getElementById('cdStop1').value=p.stops[0];
+document.getElementById('cdStop2').value=p.stops[1];
+document.getElementById('cdStop3').value=p.stops[2];
+document.getElementById('cdInkGrad').value=p.ink;
+document.getElementById('cdAngle').value=p.angle||0;
+document.getElementById('cdAngleOut').textContent=p.angle||0;
+}
+}
+function render(){
+var p=PAL[palSel.value];
+var bg,ink;
+if(p.type==='flat'){
+bg=document.getElementById('cdCanvas').value;
+ink=document.getElementById('cdInk').value;
+}else{
+var s1=document.getElementById('cdStop1').value,s2=document.getElementById('cdStop2').value,s3=document.getElementById('cdStop3').value;
+var ang=document.getElementById('cdAngle').value;
+document.getElementById('cdAngleOut').textContent=ang;
+bg='linear-gradient('+ang+'deg,'+s1+' 0%,'+s2+' 50%,'+s3+' 100%)';
+ink=document.getElementById('cdInkGrad').value;
+}
+var card=document.getElementById('cdCard');
+card.style.background=bg;
+card.style.color=ink;
+var f=FONTS[fontSel.value];
+card.style.fontFamily=f.family;
+document.getElementById('cdFontNote').textContent=f.ok?'':'Not a freely embeddable font -- previewing with a fallback. Needs a licensed file to actually render.';
+document.getElementById('cdDoodle').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:480px;height:480px">'+ICONS[iconSel.value]+'</svg>';
+var lines=[document.getElementById('cdL1').value,document.getElementById('cdL2').value,document.getElementById('cdL3').value];
+document.getElementById('cdVerse').style.fontSize=fontSizeFor(lines)+'px';
+document.getElementById('cdVerse').innerHTML=lines.map(function(l){return '<div>'+l.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div>'}).join('');
+}
+['cdL1','cdL2','cdL3','cdCanvas','cdInk','cdStop1','cdStop2','cdStop3','cdInkGrad','cdAngle','cdFont'].forEach(function(id){
+document.getElementById(id).addEventListener('input',render);
+});
+iconSel.addEventListener('change',render);
+palSel.addEventListener('change',function(){syncColorInputs();render();});
+syncColorInputs();
+render();
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import json
 import os
+import random
 from datetime import datetime, timezone
 
 from . import config
@@ -30,12 +31,12 @@ def next_position(entries: list[dict]) -> dict:
         "index": n,
         "chapter": n // config.POSTS_PER_CHAPTER + 1,
         "verse": n % config.POSTS_PER_CHAPTER + 1,
-        "palette_index": n % len(config.PALETTES),
+        "palette_index": random.randrange(len(config.PALETTES)),
     }
 
 
 def append_entry(entries: list[dict], *, pos: dict, lines: list[str], icon: str,
-                  theme: str, image_path: str) -> dict:
+                  theme: str, font: str, image_path: str) -> dict:
     palette = config.PALETTES[pos["palette_index"]]
     entry = {
         "index": pos["index"],
@@ -45,6 +46,7 @@ def append_entry(entries: list[dict], *, pos: dict, lines: list[str], icon: str,
         "created_at": _now_iso(),
         "palette_index": pos["palette_index"],
         "palette_name": palette["name"],
+        "font": font,
         "icon": icon,
         "theme": theme,
         "lines": lines,

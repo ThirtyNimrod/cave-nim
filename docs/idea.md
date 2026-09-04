@@ -19,7 +19,8 @@ scripture rather than a stream of disconnected posts.
 
 ## Color palette rotation
 
-Four cyclical duos, applied sequentially across runs:
+The first blueprint draft specified four flat canvas/ink duos, applied
+sequentially across runs:
 
 | # | Name | Canvas | Ink |
 |---|------|--------|-----|
@@ -27,6 +28,35 @@ Four cyclical duos, applied sequentially across runs:
 | 2 | Forest Tablet | `#0D382A` | `#A3E5C2` |
 | 3 | Terracotta Sunset | `#1F1412` | `#FAD4C0` |
 | 4 | Colonial Cobalt | `#0D1B2A` | `#F4EBD9` |
+
+The actual original plan was three-stop **gradients**, not flat duos —
+this surfaced later in conversation, not in the first draft:
+
+| Name | Gradient stops (as originally named) |
+|---|---|
+| Obsidian Chrome | onyx → blue slate → alabaster grey |
+| Terracotta Sunset | espresso → burnt peach → soft apricot |
+| Amethyst Geode | midnight violet → blue violet → lavender |
+| Violet Tempest | midnight blue → dark violet → aquamarine |
+| Vintage Hearth | dark wine → ash grey → linen |
+| Colonial Cobalt | ultramarine blue → soft fawn → antique white |
+
+This gradient version is what's actually implemented (`src/config.py`
+`PALETTES`, rendered at a fixed 0° angle, picked at random per post) — see
+[current-implementation-plan.md](current-implementation-plan.md). Exact hex
+values per named color were picked by the assistant as a starting point and
+are adjustable live in `tools/card_designer.html`.
+
+## Font plan
+
+Originally considered (mostly Canva marketplace fonts): Anton, Poppins,
+Nunito, Gliker, Siffon, Newsreader, Tenor, Imbue, Migra, Roca Two, Sweet
+Apricot. Of these, only Anton, Poppins, Nunito, Newsreader, Tenor Sans, and
+Imbue are real Google Fonts (free for commercial use). Gliker, Siffon
+(actual name "Sifonn"), Migra, and Roca Two are paid retail/marketplace
+fonts; Sweet Apricot has no confirmed free-for-commercial-use source. The
+implemented pool is Nunito + Poppins, loaded live via Google Fonts and
+picked at random per post.
 
 ## Caption architecture
 

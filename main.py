@@ -1,4 +1,5 @@
 import argparse
+import random
 import sys
 
 from src import canon, compositor, config, gallery, generator, illustrator
@@ -30,6 +31,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             chapter=1,
             verse=1,
             palette=config.PALETTES[0],
+            font=config.FONTS[0],
             output_path=output_path,
         )
         print(f"Mock card rendered to {output_path} (canon.json untouched).")
@@ -47,6 +49,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
         pos = canon.next_position(entries)
         palette = config.PALETTES[pos["palette_index"]]
+        font = random.choice(config.FONTS)
         image_path = config.RENDERED_DIR / f"{pos['chapter']}.{pos['verse']:02d}.png"
 
         compositor.render_card(
@@ -56,6 +59,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             chapter=pos["chapter"],
             verse=pos["verse"],
             palette=palette,
+            font=font,
             output_path=image_path,
         )
 
@@ -65,6 +69,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
             lines=result["lines"],
             icon=result["icon"],
             theme=result["theme"],
+            font=font["name"],
             image_path=str(image_path.relative_to(config.BASE_DIR)).replace("\\", "/"),
         )
         canon.save_entries(entries)
