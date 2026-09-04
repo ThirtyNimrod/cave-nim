@@ -1,0 +1,20 @@
+{
+  "fire": {"file": "fire.svg", "tags": ["fire", "flame", "warmth", "burning", "light"]},
+  "water": {"file": "water.svg", "tags": ["water", "rain", "river", "thirst", "flow"]},
+  "moon": {"file": "moon.svg", "tags": ["moon", "night", "rest", "sleep", "quiet"]},
+  "mountain": {"file": "mountain.svg", "tags": ["mountain", "climb", "obstacle", "peak", "journey"]},
+  "storm": {"file": "storm.svg", "tags": ["storm", "hardship", "struggle", "lightning", "chaos"]},
+  "spear": {"file": "spear.svg", "tags": ["spear", "hunt", "tool", "focus", "goal"]},
+  "footprint": {"file": "footprint.svg", "tags": ["footprint", "tracks", "path", "journey", "progress"]},
+  "star": {"file": "star.svg", "tags": ["star", "guidance", "hope", "direction", "night sky"]},
+  "tree": {"file": "tree.svg", "tags": ["tree", "growth", "roots", "patience", "strength"]},
+  "stone": {"file": "stone.svg", "tags": ["stone", "rock", "steadiness", "weight", "foundation"]},
+  "wind": {"file": "wind.svg", "tags": ["wind", "change", "movement", "unseen force"]},
+  "bone": {"file": "bone.svg", "tags": ["bone", "hunger", "scarcity", "hunt", "survival"]},
+  "shield": {"file": "shield.svg", "tags": ["shield", "protection", "boundary", "defense"]},
+  "pawprint": {"file": "pawprint.svg", "tags": ["pawprint", "animal", "predator", "instinct", "tracks"]},
+  "thorn": {"file": "thorn.svg", "tags": ["thorn", "bramble", "pain", "boundary", "caution"]},
+  "cave": {"file": "cave.svg", "tags": ["cave", "shelter", "home", "safety", "rest"]},
+  "seed": {"file": "seed.svg", "tags": ["seed", "sprout", "beginning", "growth", "patience"]},
+  "snow": {"file": "snow.svg", "tags": ["snow", "cold", "stillness", "waiting", "winter"]}
+}

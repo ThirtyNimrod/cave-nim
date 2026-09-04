@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'Gaegu';
+    src: url('__FONT_URL__') format('truetype');
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    width: 1080px;
+    height: 1350px;
+    background: __CANVAS_COLOR__;
+    overflow: hidden;
+    font-family: 'Gaegu', sans-serif;
+  }
+  .topbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 56px 64px 0;
+    opacity: 0.55;
+    color: __INK_COLOR__;
+  }
+  .topbar .wordmark {
+    font-size: 40px;
+  }
+  .topbar .sun-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .topbar .sun-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .doodle-wrap {
+    position: absolute;
+    top: 460px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    color: __INK_COLOR__;
+  }
+  .doodle-wrap svg {
+    width: 340px;
+    height: 340px;
+  }
+  .verse {
+    position: absolute;
+    bottom: 230px;
+    left: 90px;
+    right: 90px;
+    text-align: center;
+    color: __INK_COLOR__;
+    font-size: 54px;
+    line-height: 1.4;
+  }
+  .stamp {
+    position: absolute;
+    bottom: 72px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: __INK_COLOR__;
+    opacity: 0.6;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="wordmark">nim.</span>
+    <span class="sun-icon">__SUN_ICON_SVG__</span>
+  </div>
+  <div class="doodle-wrap">__DOODLE_SVG__</div>
+  <div class="verse">
+    <div>__LINE_1__</div>
+    <div>__LINE_2__</div>
+    <div>__LINE_3__</div>
+  </div>
+  <div class="stamp">nim. __CHAPTER__.__VERSE__</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+name: Publish to Instagram
+
+on:
+  workflow_dispatch:
+    inputs:
+      canon_ref:
+        description: 'chapter.verse to publish, e.g. 1.14. Leave blank for the latest pending entry.'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Create and poll the container but do not actually publish.'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nim-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Publish card
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          CANON_REF: ${{ inputs.canon_ref }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python main.py publish --canon-ref "$CANON_REF" --dry-run
+          else
+            python main.py publish --canon-ref "$CANON_REF"
+          fi
+
+      - name: Commit and push publish status
+        if: always()
+        run: |
+          git config user.name "nim-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add database/canon.json
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "chore: mark post as published"
+          git push
