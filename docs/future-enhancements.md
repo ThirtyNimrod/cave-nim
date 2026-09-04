@@ -20,15 +20,19 @@ Deliberately not built yet — none of these block the current pipeline.
 - Build the "Gemini Gem" reply engine from [idea.md](idea.md) as a separate,
   manual tool for in-character comment replies.
 
+## Automation
+
+- This branch is intentionally offline/manual right now (see
+  [current-implementation-plan.md](current-implementation-plan.md)).
+  GitHub Actions cron generation could be revived later if a hands-off
+  cadence becomes preferable to manual weekly batches — the earlier
+  `generate_daily.yml` design is documented in `idea.md`'s pipeline concept.
+
 ## Operations
 
-- **Repo size**: committing a PNG per day adds roughly 100-300MB/year to git
-  history. Fine at one post/day; revisit with Git LFS or periodic archival
-  if it becomes a problem.
-- **Generate failure alerts**: if `generate_daily.yml` fails (Gemini error,
-  Playwright crash), nothing currently notifies you beyond the Actions tab
-  going red. A failure notification (email, Slack, etc.) would close that
-  gap.
+- **Repo size**: committing a PNG per batch adds up over time. Fine at low
+  volume; revisit with Git LFS or periodic archival if it becomes a
+  problem.
 
 ## Font
 
@@ -38,9 +42,8 @@ Deliberately not built yet — none of these block the current pipeline.
 
 ## Review workflow
 
-- Browsing raw PNGs in `assets/rendered/` works but isn't a great review
-  experience. A tiny static gallery page (or a GitHub Pages view over
-  `canon.json` plus images) would make reviewing rendered posts faster.
+- `main.py gallery` covers basic offline browsing. Could grow filters (by
+  icon, by chapter) or a "copy caption" button if the post count gets large.
 
 ## Reach
 
